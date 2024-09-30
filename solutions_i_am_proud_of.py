@@ -24,7 +24,7 @@ def roman(number):
         map(
             convert_to_roman,
             [int(n) for n in str(number)],
-            reversed(range(len(str(number)))),
+            reversed(range(len(str(number))))
         )
     )
 
@@ -32,10 +32,9 @@ def roman(number):
 # Determine the relation of list one to list two.
 EQUAL, SUBLIST, SUPERLIST, UNEQUAL = "EQL", "SUB", "SUP", "UNEQ"
 
-
 def sublist(list_one, list_two):
-    a = "*".join(map(str, list_two)) + "*"
-    b = "*".join(map(str, list_one)) + "*"
+    a = "*".join(map(str, list_one)) + "*"
+    b = "*".join(map(str, list_two)) + "*"
     return EQUAL if a == b else SUBLIST if a in b else SUPERLIST if b in a else UNEQUAL
 
 
@@ -47,8 +46,14 @@ def is_valid(isbn):
     isbn_digits = tuple(
         map(
             lambda n: int(n) if n.isdigit() else 10 if n == "#" else 0.1,
-            isbn_cleaned,
+            isbn_cleaned
         )
     )
-    checksum = sum(map(lambda n, i: n * i, isbn_digits, range(10, 0, -1)))
+    checksum = sum(
+        map(
+            lambda n, i: n * i,
+            isbn_digits,
+            range(10, 0, -1)
+        )
+    )
     return len(isbn_digits) == 10 and checksum % 11 == 0
