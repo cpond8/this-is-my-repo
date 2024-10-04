@@ -40,20 +40,21 @@ def sublist(list_one, list_two):
 
 # Check the validity of an ISBN.
 def is_valid(isbn):
-    isbn_cleaned = tuple(
-        isbn.replace("-", "").rstrip("X") + ("#" if isbn[-1:] == "X" else "")
-    )
-    isbn_digits = tuple(
-        map(
-            lambda n: int(n) if n.isdigit() else 10 if n == "#" else 0.1,
-            isbn_cleaned
-        )
-    )
-    checksum = sum(
-        map(
-            lambda n, i: n * i,
-            isbn_digits,
-            range(10, 0, -1)
-        )
-    )
-    return len(isbn_digits) == 10 and checksum % 11 == 0
+    def clean(isbn):
+        return (isbn.replace("-", "").rstrip("X") + ("#" if isbn[-1:] == "X" else ""))
+    def to_int(n):
+        return int(n) if n.isdigit() else 10 if n == "#" else 0.1
+    def checksum(isbn):
+        return sum(map(lambda n, i: n * i, isbn, range(10, 0, -1)))
+
+    isbn_int = tuple(map(to_int, clean(isbn)))
+    return len(isbn_int) == 10 and checksum(isbn_int) % 11 == 0
+
+
+# Given an array of integers nums, return the length of
+# the longest consecutive sequence of elements.
+def longestConsecutive(self, nums):
+    def sequence(prev, length=1):
+        return length if prev + 1 not in nums else sequence(prev + 1, length + 1)
+
+    return 0 if not nums else max(map(sequence, nums))
