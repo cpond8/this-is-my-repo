@@ -39,15 +39,15 @@ def sublist(list_one, list_two):
 
 
 # Check the validity of an ISBN.
-def is_valid(isbn):
+def is_valid(isbn_raw):
     def clean(isbn):
-        return (isbn.replace("-", "").rstrip("X") + ("#" if isbn[-1:] == "X" else ""))
+        return isbn.replace("-", "").rstrip("X") + ("#" if isbn[-1:] == "X" else "")
     def to_int(n):
         return int(n) if n.isdigit() else 10 if n == "#" else 0.1
     def checksum(isbn):
         return sum(map(lambda n, i: n * i, isbn, range(10, 0, -1)))
 
-    isbn_int = tuple(map(to_int, clean(isbn)))
+    isbn_int = [to_int(n) for n in clean(isbn_raw)]
     return len(isbn_int) == 10 and checksum(isbn_int) % 11 == 0
 
 
