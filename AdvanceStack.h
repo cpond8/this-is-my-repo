@@ -5,7 +5,6 @@
 #include <iostream>  // Used only for print().
 #include "Stack.h"
 #include "StackUnderflowException.h"
-#include "UnbalancedConcatenationException.h"
 
 // This is my implementation of a stack using a doubly linked list.
 
