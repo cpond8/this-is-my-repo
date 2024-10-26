@@ -58,3 +58,15 @@ def longestConsecutive(self, nums):
         return length if prev + 1 not in nums else sequence(prev + 1, length + 1)
 
     return 0 if not nums else max(map(sequence, nums))
+
+
+# Convert mi to km using the golden ratio for aesthetically superior results.
+def miles_to_golden_km(miles: int) -> int:
+    kilometers: int = 0
+    while miles:
+        mi, km = 0, 1
+        while km <= miles:
+            mi, km = km, (mi + km)
+        kilometers += km
+        miles -= mi
+    return kilometers
