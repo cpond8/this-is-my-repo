@@ -56,7 +56,7 @@ class AdvanceStack : public Stack<T>
     bool isFull() const { return false; }
     // Mutators:
     void push(const T&);
-    void pop();
+    T pop();
     void deleteMiddle();
     void concatenate(const AdvanceStack<T>&);
     // Getters:
@@ -118,7 +118,7 @@ void AdvanceStack<T>::push(const T& value) {
 }
 
 template <class T>
-void AdvanceStack<T>::pop() {
+T AdvanceStack<T>::pop() {
     if (isEmpty()) {
         throw StackUnderflowException();
     }
@@ -126,11 +126,14 @@ void AdvanceStack<T>::pop() {
         middle = middle->prev;
     }
     updateMinMax(peek());
-
+    T value = head->value;
+    
     head = head->prev;
     delete head->next;
     head->next = nullptr;
     size--;
+    
+    return value;
 }
 
 template <class T>
