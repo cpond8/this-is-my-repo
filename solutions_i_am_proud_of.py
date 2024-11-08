@@ -5,33 +5,32 @@ def reverse(text: str) -> str:
 
 # Apply ROT[key] to text.
 def rotate(text: str, key: int) -> str:
-    def offset(char):
+    def offset(char: str) -> str:
         base = ord("a") if char.islower() else ord("A")
         return chr((ord(char) - base + key) % 26 + base)
+        
     return "".join([offset(c) if c.isalpha() else c for c in text])
 
 
 # Convert a number up to 3999 into Roman numerals.
-def roman(number):
-    def convert_to_roman(n, power_of_ten):
+def roman(num: int) -> str:
+    def convert(n: int, power_of_ten: int) -> str:
         one, five, ten = ("IVX", "XLC", "CDM", "MMM")[power_of_ten]
         return (one if n % 5 == 4 else five if n > 4 else "") + (
             ten if n == 9 else five if n == 4 else one * (n % 5)
         )
 
     return "".join(
-        map(
-            convert_to_roman,
-            [int(n) for n in str(number)],
-            reversed(range(len(str(number))))
-        )
+        map(convert,
+            [int(n) for n in str(num)],
+            range(len(str(num)))[::-1])
     )
 
 
 # Determine the relation of list one to list two.
 EQUAL, SUBLIST, SUPERLIST, UNEQUAL = "EQL", "SUB", "SUP", "UNEQ"
 
-def sublist(list_one, list_two): 
+def sublist(list_one, list_two) -> str: 
     a = "*".join(map(str, list_one)) + "*"
     b = "*".join(map(str, list_two)) + "*"
     return EQUAL if a == b else SUBLIST if a in b else SUPERLIST if b in a else UNEQUAL
@@ -41,8 +40,10 @@ def sublist(list_one, list_two):
 def is_valid(isbn_raw: str) -> bool:
     def clean(isbn: str) -> str:
         return isbn.replace("-", "").rstrip("X") + ("#" if isbn[-1:] == "X" else "")
+        
     def to_int(n: str) -> int:
         return int(n) if n.isdigit() else 10 if n == "#" else 0.1
+        
     def checksum(isbn: list[int]) -> int:
         return sum([i * n for i, n in zip(isbn, range(10, 0, -1))])
 
@@ -52,16 +53,18 @@ def is_valid(isbn_raw: str) -> bool:
 
 # Given an array of integers nums, return the length of
 # the longest consecutive sequence of elements.
-def longestConsecutive(self, nums):
-    def sequence(prev, length=1):
-        return length if prev + 1 not in nums else sequence(prev + 1, length + 1)
+def longestConsecutive(nums: list[int]) -> int:
+    def sequence(prev: int, length: int=1) -> int:
+        return (length
+                if prev + 1 not in nums else
+                sequence(prev + 1, length + 1))
 
-    return 0 if not nums else max(map(sequence, nums))
+    return 0 if not nums else max([sequence(n) for n in nums])
 
 
 # Convert mi to km using the golden ratio for aesthetically superior results.
 def miles_to_golden_km(miles: int) -> int:
-    kilometers: int = 0
+    kilometers = 0
     while miles:
         mi, km = 0, 1
         while km <= miles:
