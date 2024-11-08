@@ -1,15 +1,14 @@
 # Reverse a string of text.
-def reverse(text):
-    return "" if not len(text) else text[-1] + reverse(text[:-1])
+def reverse(text: str) -> str:
+    return "" if not text else text[-1] + reverse(text[:-1])
 
 
 # Apply ROT[key] to text.
-def rotate(text, key):
+def rotate(text: str, key: int) -> str:
     def offset(char):
         base = ord("a") if char.islower() else ord("A")
         return chr((ord(char) - base + key) % 26 + base)
-
-    return "".join(map(lambda c: offset(c) if c.isalpha() else c, text))
+    return "".join([offset(c) if c.isalpha() else c for c in text])
 
 
 # Convert a number up to 3999 into Roman numerals.
@@ -32,20 +31,20 @@ def roman(number):
 # Determine the relation of list one to list two.
 EQUAL, SUBLIST, SUPERLIST, UNEQUAL = "EQL", "SUB", "SUP", "UNEQ"
 
-def sublist(list_one, list_two):
+def sublist(list_one, list_two): 
     a = "*".join(map(str, list_one)) + "*"
     b = "*".join(map(str, list_two)) + "*"
     return EQUAL if a == b else SUBLIST if a in b else SUPERLIST if b in a else UNEQUAL
 
 
 # Check the validity of an ISBN.
-def is_valid(isbn_raw):
-    def clean(isbn):
+def is_valid(isbn_raw: str) -> bool:
+    def clean(isbn: str) -> str:
         return isbn.replace("-", "").rstrip("X") + ("#" if isbn[-1:] == "X" else "")
-    def to_int(n):
+    def to_int(n: str) -> int:
         return int(n) if n.isdigit() else 10 if n == "#" else 0.1
-    def checksum(isbn):
-        return sum(map(lambda n, i: n * i, isbn, range(10, 0, -1)))
+    def checksum(isbn: list[int]) -> int:
+        return sum([i * n for i, n in zip(isbn, range(10, 0, -1))])
 
     isbn_int = [to_int(n) for n in clean(isbn_raw)]
     return len(isbn_int) == 10 and checksum(isbn_int) % 11 == 0
