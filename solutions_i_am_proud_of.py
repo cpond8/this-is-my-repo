@@ -72,3 +72,33 @@ def miles_to_golden_km(miles: int) -> int:
         kilometers += km
         miles -= mi
     return kilometers
+
+
+# Given an m x n matrix of integers as a list of row vectors, return a list of every element in the matrix in spiral order.
+def spiral_order(matrix: list[list[int]]) -> list[int]:
+    x0, y0 = 0, 0
+    xf = len(matrix[0]) - 1
+    yf = len(matrix) - 1
+    spiral = []
+
+    while x0 <= xf and y0 <= yf:
+        # top side rightward
+        for x in range(x0, xf + 1):
+            spiral.append(matrix[y0][x])
+        y0 += 1
+        # right side downward
+        for y in range(y0, yf + 1):
+            spiral.append(matrix[y][xf])
+        xf -= 1
+        # bottom side leftward
+        if y0 <= yf:
+            for x in range(xf, x0 - 1, -1):
+                spiral.append(matrix[yf][x])
+            yf -= 1
+        # left side upward
+        if x0 <= xf:
+            for y in range(yf, y0 - 1, -1):
+                spiral.append(matrix[y][x0])
+            x0 += 1
+
+    return spiral
