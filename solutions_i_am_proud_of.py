@@ -15,7 +15,6 @@ def roman(num: int) -> str:
             one if n % 5 == 4 else five if n > 4 else "") + (
             ten if n == 9 else five if n == 4 else one * (n % 5)
         )
-    
     return "".join(
         convert(int(n), i)
         for n, i in zip(str(num), reversed(range(len(str(num)))))
@@ -63,9 +62,8 @@ def miles_to_golden_km(miles: int) -> int:
     return kilometers
 
 
-# Apply the Atbash cipher to a given string, and return the encypted text
-# divided into blocks of 5 characters. Leave numerals unchanged and
-# ignore any non-alphanumeric characters.
+# Encrypt a string using the Atbash cipher, returning text in blocks of 5,
+# keeping numerals unchanged and ignoring non-alphanumeric characters.
 atbash = str.maketrans(abc := "abcdefghijklmnopqrstuvwxyz", abc[::-1], " ")
 
 def encode(txt: str) -> str:
@@ -73,3 +71,22 @@ def encode(txt: str) -> str:
         c.lower().translate(atbash) for c in txt if c.isalnum()
     )
     return " ".join(ciph[i:i+5] for i in range(0, len(ciph), 5))
+
+
+# Given two strings num1 and num2 representing non-negative integers,
+# return their product as a string, converting only single digits at a time.
+def multiply(self, num1: str, num2: str) -> str:
+    def build(a: int, string: str) -> int:
+        return sum(a * int(x) * 10**n for n, x in enumerate(string))
+
+    def end(x: int) -> int:
+        return 1 + sum(1 for n in range(len(num1 + num2)) if x // 10**n)
+
+    product: int = build(
+        a=build(a=1, string=reversed(num1)),
+        string=reversed(num2)
+    )
+    digits: list[int] = [
+        product % 10**n // 10 ** (n - 1) for n in range(1, max(end(product), 2))
+    ]
+    return "".join(str(d) for d in reversed(digits))
