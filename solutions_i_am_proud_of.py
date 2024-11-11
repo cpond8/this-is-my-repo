@@ -1,3 +1,19 @@
+# Given a minesweeper board, fill in the mine counts for the empty squares.
+def annotate_minefield(grid: [str]) -> [str]:
+    def count_adjacent(r: int, c: int) -> str:
+        up, dn = max(r - 1, 0), min(r + 2, len(grid))
+        lt, rt = max(c - 1, 0), min(c + 2, len(grid[0]))
+        mines = sum(
+            1 for row in grid[up:dn] for tile in row[lt:rt] if tile == "*"
+        )
+        return str(mines) if mines and grid[r][c] != "*" else grid[r][c]
+
+    return [
+        "".join(count_adjacent(r, c) for c in range(len(row)))
+        for r, row in enumerate(grid)
+    ]
+
+
 # Apply ROT[key] to text.
 def rotate(text: str, key: int) -> str:
     def offset(char: str) -> str:
